@@ -1,0 +1,32 @@
+function App() {
+  const [count, setCount] = useState(0);
+  const [player, setplayer] = useState("");
+  const [playerTurn, setplayerTurn] = useState(true);
+  const [arrayPlayer, setarray] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
+
+  const handleEvent = (selectedIndex) => {
+    if (playerTurn) {
+      setplayer((player) => (player = "x"));
+    } else {
+      setarray;
+      setplayer((player) => (player = "0"));
+    }
+    setarray(
+      arrayPlayer.map((box, index) =>
+        index == selectedIndex ? (box ? box : player) : box
+      )
+    );
+    console.log(selectedIndex, player);
+    setplayerTurn((prevPlayer) => !prevPlayer);
+  };
+i have created this code this has a problem that when i click first time it does not update the state but when i clicked second then it working what is the problem solve and explain also
