@@ -99,14 +99,14 @@ function Gameplay() {
             gap-3 "
             >
               <Players skin={xSkin} isPulsing={playerx} />
-              <h1 className="text-white">{Oscore}</h1>
+              <h1 className="text-white">{Xscore}</h1>
             </div>
             <div
               className="flex flex-col items-center justify-center
             gap-3"
             >
               <Players skin={oSkin} isPulsing={palyery} />
-              <h1 className="text-white">{Xscore}</h1>
+              <h1 className="text-white">{Oscore}</h1>
             </div>
           </div>
           <div
