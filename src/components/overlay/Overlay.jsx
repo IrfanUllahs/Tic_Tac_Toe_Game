@@ -4,7 +4,7 @@ function Overlay() {
   return (
     <div
       className="absolute z-40 h-full w-full flex
-    items-center"
+    items-center  "
     ></div>
   );
 }

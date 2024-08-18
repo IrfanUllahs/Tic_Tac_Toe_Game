@@ -1,7 +1,7 @@
 import React from "react";
 import image1 from "/images/selectGameImages/1.png";
 import image2 from "/images/selectGameImages/2.png";
-function SelectGame({ GameOn }) {
+function Selectcategory({ GameOn }) {
   return (
     <>
       <div className="box flex items-center justify-center h-svh w-svw bg-gray-400">
@@ -12,7 +12,12 @@ function SelectGame({ GameOn }) {
 
           <div className="mr-[120px] flex flex-col gap-[20px] text-white">
             {/* rule 1 is here */}
-            <div className="wrapper relative  z-30 cursor-pointer  ">
+            <div
+              className="wrapper relative  z-30 cursor-pointer  "
+              onClick={() => {
+                GameOn("single");
+              }}
+            >
               <div className="parent bg-[#FF8A00] rounded-full w-[80px] h-[80px] z-30 flex items-center justify-center">
                 <img src={image1} />
               </div>
@@ -23,7 +28,9 @@ function SelectGame({ GameOn }) {
             {/* rule 2 is here  */}
             <div
               className="wrapper relative  z-30  cursor-pointer"
-              onClick={GameOn}
+              onClick={() => {
+                GameOn("two");
+              }}
             >
               <div className="parent bg-[#EB00FF] rounded-full w-[80px] h-[80px] z-30 flex items-center justify-center">
                 <img src={image2} />
@@ -39,4 +46,4 @@ function SelectGame({ GameOn }) {
   );
 }
 
-export default SelectGame;
+export default Selectcategory;
