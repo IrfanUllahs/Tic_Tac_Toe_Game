@@ -6,7 +6,7 @@ import xSkin from "/images/xSkin.png";
 import CheckWinner from "../logic/CheckWinner";
 import Players from "../Players/Players";
 
-function Gameplay() {
+function SinglePlayerGame() {
   const [playerx, setPlayerx] = useState(true);
   const [palyery, setPalyery] = useState(false);
   const [playerTurn, setPlayerTurn] = useState(true);
@@ -14,29 +14,13 @@ function Gameplay() {
   const [Xscore, setXscore] = useState(0);
   const [Oscore, setOscore] = useState(0);
   const [draw, setdraw] = useState(0);
-  const [playerArray, setArray] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
+  const [playerArray, setArray] = useState(Array(9).fill(""));
   const [popupStatus, setPopupStatus] = useState(null);
   const [overlay, setoverlay] = useState(null);
+
   useEffect(() => {
     CheckWinner(setPopupStatus, setoverlay, playerArray, filledBoxes);
   }, [playerArray]);
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 6);
-  }
-  useEffect(() => {
-    console.log(getRandomNumber());
-  }, [playerArray]);
-  // this is useEffect for score handling
 
   useEffect(() => {
     if (popupStatus === "Player x") {
@@ -47,15 +31,35 @@ function Gameplay() {
       setdraw((prevScore) => prevScore + 1);
     }
   }, [popupStatus]);
-  // To handle event
-  const handleEvent = (selectedIndex) => {
-    let currentPlayer = playerTurn ? "x" : "0";
-    if (!playerArray[selectedIndex]) {
-      setFilledBoxes((prevValue) => prevValue + 1);
+
+  useEffect(() => {
+    if (!playerTurn && !popupStatus) {
+      const timer = setTimeout(cpuMove, 1000); // 1 second delay
+      return () => clearTimeout(timer); // Cleanup on component unmount or dependencies change
     }
+  }, [playerTurn]);
+
+  const cpuMove = () => {
+    let availableMoves = playerArray
+      .map((box, index) => (box === "" ? index : null))
+      .filter((index) => index !== null);
+
+    if (availableMoves.length > 0) {
+      const randomIndex =
+        availableMoves[Math.floor(Math.random() * availableMoves.length)];
+      handleEvent(randomIndex);
+    }
+  };
+
+  const handleEvent = (selectedIndex) => {
+    if (playerArray[selectedIndex] || popupStatus) return;
+
+    let currentPlayer = playerTurn ? "x" : "0";
+
+    setFilledBoxes((prevValue) => prevValue + 1);
     setArray((prevArray) =>
       prevArray.map((box, index) =>
-        index === selectedIndex ? (box ? box : currentPlayer) : box
+        index === selectedIndex ? currentPlayer : box
       )
     );
     setPlayerx((prev) => !prev);
@@ -66,20 +70,22 @@ function Gameplay() {
   const cancelClick = () => {
     setPopupStatus(null);
   };
+
   const playAgain = () => {
     setArray(Array(9).fill(""));
     setPlayerTurn(true);
     setFilledBoxes(0);
     setPopupStatus(null);
     setoverlay(null);
+    setPlayerx(true);
+    setPalyery(false);
   };
 
   const renderBox = (value, index) => (
     <p
-      className="text-green-600 bg-[#C4C4C4]
-      p-2 h-[60px] w-[60px] rounded-xl flex items-center justify-center"
+      className="text-green-600 bg-[#C4C4C4] p-2 h-[60px] w-[60px] rounded-xl flex items-center justify-center"
       key={index}
-      onClick={() => handleEvent(index)}
+      onClick={() => playerx && handleEvent(index)}
     >
       <img
         src={
@@ -92,55 +98,33 @@ function Gameplay() {
       />
     </p>
   );
+
   return (
     <>
       <div className="box flex items-center justify-center h-svh w-svw bg-gray-400 select-none">
-        <div className="box flex flex-col items-center justify-center bg-gradient-to-b from-[#2f22c3] to-[#9e18c6]  w-[300px] h-[500px] rounded-xl">
-          {/* this is the score board area */}
-          <div
-            className="flex
-           justify-between w-[80%]"
-          >
-            <div
-              className="flex flex-col items-center justify-center
-            gap-3 "
-            >
+        <div className="box flex flex-col items-center justify-center bg-gradient-to-b from-[#2f22c3] to-[#9e18c6] w-[300px] h-[500px] rounded-xl">
+          <div className="flex justify-between w-[80%]">
+            <div className="flex flex-col items-center justify-center gap-3">
               <Players skin={xSkin} isPulsing={playerx} />
               <h1 className="text-white">{Xscore}</h1>
             </div>
-            <div
-              className="flex flex-col items-center justify-center
-            gap-3"
-            >
+            <div className="flex flex-col items-center justify-center gap-3">
               <Players skin={oSkin} isPulsing={palyery} />
               <h1 className="text-white">{Oscore}</h1>
             </div>
           </div>
-          <div
-            className="flex
-         flex-col gap-[30px] bg-[#391898] p-4 rounded-xl mt-[40px]"
-          >
-            {/* this is row */}
-            <div
-              className="flex gap-[20px]
-           "
-            >
+          <div className="flex flex-col gap-[30px] bg-[#391898] p-4 rounded-xl mt-[40px]">
+            <div className="flex gap-[20px]">
               {renderBox(playerArray[0], 0)}
               {renderBox(playerArray[1], 1)}
               {renderBox(playerArray[2], 2)}
             </div>
-            <div
-              className="flex gap-[20px]
-           "
-            >
+            <div className="flex gap-[20px]">
               {renderBox(playerArray[3], 3)}
               {renderBox(playerArray[4], 4)}
               {renderBox(playerArray[5], 5)}
             </div>
-            <div
-              className="flex gap-[20px]
-           "
-            >
+            <div className="flex gap-[20px]">
               {renderBox(playerArray[6], 6)}
               {renderBox(playerArray[7], 7)}
               {renderBox(playerArray[8], 8)}
@@ -162,4 +146,4 @@ function Gameplay() {
   );
 }
 
-export default Gameplay;
+export default SinglePlayerGame;
