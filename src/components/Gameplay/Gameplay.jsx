@@ -30,12 +30,7 @@ function Gameplay() {
   useEffect(() => {
     CheckWinner(setPopupStatus, setoverlay, playerArray, filledBoxes);
   }, [playerArray]);
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 6);
-  }
-  useEffect(() => {
-    console.log(getRandomNumber());
-  }, [playerArray]);
+
   // this is useEffect for score handling
 
   useEffect(() => {
@@ -74,7 +69,7 @@ function Gameplay() {
     setoverlay(null);
   };
 
-  const renderBox = (value, index) => (
+  const renderBox = (index) => (
     <p
       className="text-green-600 bg-[#C4C4C4]
       p-2 h-[60px] w-[60px] rounded-xl flex items-center justify-center"
@@ -125,17 +120,17 @@ function Gameplay() {
               className="flex gap-[20px]
            "
             >
-              {renderBox(playerArray[0], 0)}
-              {renderBox(playerArray[1], 1)}
-              {renderBox(playerArray[2], 2)}
+              {renderBox(0)}
+              {renderBox(1)}
+              {renderBox(2)}
             </div>
             <div
               className="flex gap-[20px]
            "
             >
-              {renderBox(playerArray[3], 3)}
-              {renderBox(playerArray[4], 4)}
-              {renderBox(playerArray[5], 5)}
+              {renderBox(3)}
+              {renderBox(4)}
+              {renderBox(5)}
             </div>
             <div
               className="flex gap-[20px]
